@@ -1,0 +1,53 @@
+---
+title: 'Tidyverse: Data Wrangling 101 - Exercises'
+author: "Stijn Van de Vondel"
+date: "22-9-2021"
+output: 
+  rmdformats::robobook:
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="120")
+opts_chunk$set(#echo = FALSE,
+	             #cache = TRUE,
+               #prompt = FALSE,
+               #tidy = TRUE,
+               comment = NA#,
+               #message = FALSE,
+               #warning = FALSE
+  )
+opts_knit$set(width = 120)
+```
+
+### Exercises
+
+Below you will find a couple of exercises to practice the `dplyr` verbs above. Often, multiple solutions exist to obtain the same answer. Feel free to use whichever tools you have at your disposal, but see to it that you *also* try with the things shown in this [5. Data manipulation with `dplyr`]!
+
+#### Exercise 1
+
+-   Using the `starwars` dataset, select all character columns, along with `height`. Bonus points if you can come up with multiple ways to achieve this!
+
+-   With the selected columns, find all characters that are:
+
+    -   taller than 150 cm and have a maximum height of 210 cm
+    -   have blond or no hair colour ("none")
+    -   are of the Human species
+    -   not born on planets Bespin, Coruscant or Haruun Kal
+
+```{r ex1 solution, eval = FALSE, echo = FALSE}
+starwars %>% 
+  select(height, where(is.character)) %>% 
+  filter(height > 150, height <= 210, 
+         hair_color == "blond" | hair_color == "none",
+         species == "Human", 
+         !homeworld %in% c("Bespin", "Coruscant", "Haruun Kal")
+         )
+```
+
+#### Exercise 2
+What is an alternative way of writing semi_join() (%in%)
