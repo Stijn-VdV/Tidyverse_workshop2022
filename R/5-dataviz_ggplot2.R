@@ -2,6 +2,8 @@
 ######## Tidyverse: Data Wrangling 101 ########
 ########      **DataViz: ggplot2**     ########
 ########_______________________________########
+rm(list = ls())
+.rs.restartR()
 
 " Description of ggplot2:
 A system for 'declaratively' creating graphics, based on 'The Grammar of Graphics'.

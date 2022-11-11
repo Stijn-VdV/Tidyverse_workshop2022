@@ -2,8 +2,12 @@
 ######## Tidyverse: Data Wrangling 101 ########
 ######## Data manipulation: dplyr pt.I ########
 ########_______________________________########
-#rm(list = ls())
+rm(list = ls())
+.rs.restartR()
+
 # dataset: starwars (included with dplyr)
+library(dplyr)
+
 ?starwars
 glimpse(starwars)
 head(starwars)
@@ -36,13 +40,14 @@ starwars %>%
 starwars %>%
   select(contains("o"))
 
-# use select() to prepare data
+# use select() to prepare data for next steps
 starwars <- select(starwars, -c(films, vehicles, starships))
 
 # - filter() to filter rows using TRUE/FALSE statements ----
 # characters with a gold skin colour
 1 == 1
 1 == 2
+c(1, 3, 5) == c(1, 3, 5) # boolean operations on vectors
 
 starwars %>%
   filter(skin_color == "gold")
@@ -65,7 +70,7 @@ starwars %>%
   filter(!eye_color %in% c("blue", "red"))
 
 starwars %>%
-  filter(str_detect(eye_color, pattern = "blu"))
+  filter(stringr::str_detect(eye_color, pattern = "blu"))
 
 # see `?base::Logic` for an overview of logic operators
   # NOT: !x
@@ -119,7 +124,11 @@ starwars %>%
 starwars %>%
   mutate(across(where(is.numeric), function(x) {x*10}))
 
-  # tidy code
+  # base R, less verbose (since R 4.1)
+starwars %>%
+  mutate(across(where(is.numeric), \(x) {x*10}))
+
+  # tidy code, less verbose
 starwars %>%
   mutate(across(where(is.numeric), ~.x*10))
 
@@ -129,7 +138,7 @@ force10 <- function(x){
   x*10
 }
 
-  # apply function
+  # apply function (tidy)
 starwars %>%
   mutate(across(where(is.numeric), ~force10(.x)))
 
@@ -154,8 +163,6 @@ starwars %>%
             average_weight = mean(mass, na.rm = TRUE),
             stdev_weight = sd(mass, na.rm = TRUE))
 
-groups(starwars)
-
 # average height and weight PER SPECIES #1
 starwars %>%
   group_by(species) %>%
@@ -166,7 +173,7 @@ starwars %>%
 
 # average height and weight PER SPECIES #2
 starwars %>%
-  drop_na(species) %>%
+  tidyr::drop_na(species) %>%
   group_by(species) %>%
   filter(n() >= 3) %>%
   summarize(average_height = mean(height, na.rm = TRUE),
@@ -192,7 +199,7 @@ sw_force <- starwars %>%
     the_force = 1/bmi*birth_year) %>%
   select(name, the_force) %>%
   arrange(name) %>%
-  drop_na(the_force)
+  tidyr::drop_na(the_force)
 
 # slice() to select/remove specific rows
 sw_force %>%
@@ -294,7 +301,7 @@ starwars %>%
 #             You can start with the code provided below
 
 storms %>%
-  filter(!str_detect(name, "AL|Al2"))
+  filter(!stringr::str_detect(name, "AL|Al2"))
 
 
 

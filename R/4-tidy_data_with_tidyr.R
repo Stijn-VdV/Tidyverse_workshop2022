@@ -2,6 +2,8 @@
 ######## Tidyverse: Data Wrangling 101 ########
 ########    **Tidy data with tidyr**   ########
 ########_______________________________########
+rm(list = ls())
+.rs.restartR()
 
 # - Wide vs long tables ----
 # wide table example

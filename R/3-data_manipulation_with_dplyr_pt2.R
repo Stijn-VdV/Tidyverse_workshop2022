@@ -2,8 +2,12 @@
 #######  Tidyverse: Data Wrangling 101  #######
 #######  Data manipulation: dplyr pt.II #######
 ########_______________________________########
+rm(list = ls())
+.rs.restartR()
 
 # - joining data: basic principle ----
+library(dplyr)
+
 # data spread across two tables
 df1 <- tibble(
   ID = c("A", "B", "C"),

@@ -2,15 +2,18 @@
 ######## Tidyverse: Data Wrangling 101 ########
 ######## **Introduction to Tidyverse** ########
 ########_______________________________########
+rm(list = ls())
+.rs.restartR()
 
 # - Install and import tidyverse ----
-  # install + load tidyverse
-if (!require("tidyverse")) install.packages("tidyverse")
+# install + load tidyverse
+# if (!require("tidyverse")) install.packages("tidyverse")
+# install.packages("tidyverse")
 
-  # check for updates
+# check for updates
 tidyverse::tidyverse_update()
 
-  # masked functions
+# masked functions -> namespaces {package_name}::{function_name}()
 filter
 stats::filter
 dplyr::filter
@@ -24,13 +27,18 @@ a_dataframe <- data.frame(x = 1:25,
                           y = rnorm(25, 1, 2))
 
 # create a tibble from the dataframe
-a_tibble <- as_tibble(a_dataframe)
+a_tibble <- tibble::as_tibble(a_dataframe)
 
 # compare
-all.equal(a_dataframe, a_tibble)
-
 a_dataframe
 a_tibble
+
+sum(a_dataframe$y) == sum(a_tibble$y)  # equal sums
+all.equal(a_dataframe, a_tibble)    # some differences (?)
+class(a_dataframe); class(a_tibble) # only differnce is class description
+
+# clean environment
+rm(list = ls())
 
 # - Pipes: basics ----
 # basics
@@ -38,6 +46,7 @@ a_tibble
 sum(24, 9)
 
 # magrittr
+library(magrittr) # pipe from magrittr package: %>%
 24 %>% sum(9)
 24 %>% sum(9, .) # . as placeholder
 
@@ -45,31 +54,35 @@ sum(24, 9)
 24 |> sum(9)
 
 # show data
-glimpse(mtcars)
+dplyr::glimpse(mtcars)
 str(mtcars)
 head(mtcars)
 
+# load dplyr
+library(dplyr) # filter, mutate, select
+
   # mtcars #1
-df_cars1 <- rownames_to_column(mtcars, "car")
-df_cars1 <- filter(df_cars1, str_detect(car, "Merc"))
+df_cars1 <- tibble::rownames_to_column(mtcars, "car") # function from tibble package
+df_cars1 <- filter(df_cars1, stringr::str_detect(car, "Merc"))
 df_cars1 <- mutate(df_cars1, kml = mpg*(1.60934/3.78541))
 df_cars1 <- select(df_cars1, car, kml, cyl, hp)
 
   # mtcars #2
 df_cars2 <- select(
   mutate(
-    filter(rownames_to_column(mtcars, "car"), str_detect(car, "Merc")),
+    filter(tibble::rownames_to_column(mtcars, "car"), stringr::str_detect(car, "Merc")),
     kml = mpg*(1.60934/3.78541)),
   car, kml, cyl, hp)
 
   # mtcars #3
 df_cars3 <- mtcars %>%
-  rownames_to_column("car") %>%
-  filter(str_detect(car, "Merc")) %>%
+  tibble::rownames_to_column("car") %>%
+  filter(stringr::str_detect(car, "Merc")) %>%
   # convert miles per gallon -> km per liter
   mutate(kml = mpg*(1.60934/3.78541)) %>%
   select(car, kml, cyl, hp)
 
+  # check
 all.equal(df_cars1, df_cars2)
 all.equal(df_cars2, df_cars3)
 all.equal(df_cars1, df_cars3)
