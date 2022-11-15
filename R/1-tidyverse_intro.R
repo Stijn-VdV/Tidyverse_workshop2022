@@ -27,6 +27,8 @@ a_dataframe <- data.frame(x = 1:25,
                           y = rnorm(25, 1, 2))
 
 # create a tibble from the dataframe
+# library(tidyverse)
+# as_tibble(a_dataframe)
 a_tibble <- tibble::as_tibble(a_dataframe)
 
 # compare
@@ -46,9 +48,14 @@ rm(list = ls())
 sum(24, 9)
 
 # magrittr
+# library(tidyverse)
+# library(dplyr)
 library(magrittr) # pipe from magrittr package: %>%
 24 %>% sum(9)
 24 %>% sum(9, .) # . as placeholder
+
+"one" %>% paste("two")
+"one" %>% paste("two", .)
 
 # base R
 24 |> sum(9)

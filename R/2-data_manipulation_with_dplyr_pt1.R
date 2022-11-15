@@ -59,11 +59,15 @@ starwars %>%
 starwars %>%
   filter(gender == "masculine",
          skin_color != "gold",
-         height >= 176.5) %>% view()
+         height >= 176.5) %>% View()
 
 # characters with eye_color == "blue" OR eye_color == "red"
+# starwars %>%
+#   filter(eye_color == "blue" | eye_color == "red")
+
 starwars %>%
   filter(eye_color %in% c("blue", "red"))
+
 
 # characters NOT with eye_color == "blue" OR eye_color == "red
 starwars %>%
@@ -95,6 +99,10 @@ starwars %>%
   arrange(skin_color, species)
 
 # - mutate() to create/modify columns ----
+starwars_test <- starwars
+
+starwars_test$new_column <- "star wars"
+
 # calculate BMI and arrange from highest to lowest
 sw_bmi <- starwars %>%
   mutate(bmi = mass/(height/100)^2) %>%
@@ -122,7 +130,12 @@ starwars %>%
 # advanced mutations
   # verbose code
 starwars %>%
-  mutate(across(where(is.numeric), function(x) {x*10}))
+  # mutate(height = as.character(height)) %>%
+  mutate(
+    across(
+      where(is.numeric), function(x) {x*10}
+      )
+    )
 
   # base R, less verbose (since R 4.1)
 starwars %>%
@@ -169,7 +182,14 @@ starwars %>%
   summarize(average_height = mean(height, na.rm = TRUE),
             stdev_height = sd(height, na.rm = TRUE),
             average_weight = mean(mass, na.rm = TRUE),
-            stdev_weight = sd(mass, na.rm = TRUE))
+            stdev_weight = sd(mass, na.rm = TRUE)) %>%
+  glimpse()
+
+# group_by can also be used with mutate, filter, ...
+starwars %>%
+  group_by(species) %>%
+  mutate(average_height = mean(height, na.rm = TRUE))  %>%
+  ungroup() # remove grouping
 
 # average height and weight PER SPECIES #2
 starwars %>%
@@ -179,7 +199,7 @@ starwars %>%
   summarize(average_height = mean(height, na.rm = TRUE),
             average_weight = mean(mass, na.rm = TRUE),
             individuals = n()) %>%
-  arrange(-average_height, -average_weight)
+  arrange(desc(average_height), -average_weight)
 
 # count() as a quick-and-dirty group_by() %>% summarize()
 starwars %>%
