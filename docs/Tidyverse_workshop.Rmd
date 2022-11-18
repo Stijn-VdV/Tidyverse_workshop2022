@@ -1,7 +1,7 @@
 ---
 title: "Tidyverse: Data Wrangling 101"
 author: "Stijn Van de Vondel"
-date: "27-7-2021"
+date: "07-11-2022"
 output: 
   rmdformats::robobook:
     toc_depth: 3
@@ -12,7 +12,7 @@ library(knitr)
 library(rmdformats)
 
 ## Global options
-options(max.print="120")
+options(max.print="150")
 opts_chunk$set(#echo = FALSE,
 	             #cache = TRUE,
                #prompt = FALSE,
@@ -21,7 +21,7 @@ opts_chunk$set(#echo = FALSE,
                #message = FALSE,
                #warning = FALSE
   )
-opts_knit$set(width = 120)
+opts_knit$set(width = 150)
 
 ```
 
@@ -37,30 +37,11 @@ colorize <- function(x, color) {
 }
 ```
 
-## 0. Prerequisites
+## 0. Getting started
 
 ### 0.1 Target audience
 
-This course is targeted at Master's and Ph.D. students with a basic understanding of the R programming language, but want to manipulate (large) datasets with more ease than using spreadsheet software. In other words, being comfortable with basic R operations is a required.
-
-If you *can* answer the following questions without much of a hassle, please move on to [0.2 Preparations]:
-
--   What does the `<-` operator do?
-
--   How to create a vector with the values `"this"`, `"is"`, `"a"`, `"vector"`?
-
--   How to access R's built-in help files (also referred to as "R documentation") for the function `shapiro.test`?
-
--   How to install and load a new package into your R session?
-
--   Why *doesn't* the following piece of code work (run code in an R session to check):
-
-    ```{r, collapse = TRUE, eval = FALSE}
-    foobar <- data.frame(x = 1:10, y = rnorm(10, 5, 1))
-    plot(FOOBAR)
-    ```
-
-In case you had trouble with *any* of these questions, please take some time to get comfortable with some R basics. As we have a lot of ground to cover, it would be unwise to jump in unprepared! I strongly recommend the `swirl` package, which interactively introduces you to R (see [**swirl's website**](https://swirlstats.com/students.html) for more information). To get started with `swirl` right away, install the package using `install.packages("swirl")`, load it into your session with `library(swirl)` and jump-start your journey with `swirl()`. Going through the first chapter (`1: Basic Building Blocks`) should suffice, but don't let that stop you from learning moRe!
+This course is targeted at Master's and Ph.D. students with a basic understanding of the R programming language, but want to manipulate (large) datasets with more ease than using spreadsheet software. In other words, being comfortable with basic R operations is required.
 
 ### 0.2 Preparations
 
@@ -73,7 +54,11 @@ Make sure to have at least `R version 4.1.0` installed on your computer. Additio
 
 Finally, install tidyverse using `install.packages("tidyverse")`.
 
-### 0.3 Overview {data-link="0.2 Preparations"}
+### **0.3 Prerequisites**
+
+A basic understanding of R is assumed. As we have a lot of ground to cover, it would be unwise to jump in unprepared! If you are not yet comfortable with R basics (loading a package, importing data, creating vectos and dataframes), I strongly recommend the \`swirl\` package, which interactively introduces you to R (see [swirl's website](%5Bhttps://swirlstats.com/students.html)](<https://swirlstats.com/students.html>)) for more information). To get started with \`swirl\` right away, install the package using \`install.packages("swirl")\`, load it into your session with \`library(swirl)\` and jump-start your journey with \`swirl()\`. Going through the first chapter (\`1: Basic Building Blocks\`) should suffice, but don't let that stop you from learning moRe!
+
+### 0.4 Overview {data-link="0.2 Preparations"}
 
 For an overview of all sections covered within this material, please refer to the sidebar of this document or use the hyperlinks shown below. Sections 1 to 4 are not required for working with `tidyverse`, but are recommended to expand your understanding of how these packages work the way they do. Additionally, you'll learn how to deal with importing data, including a section on larger datasets. Starting from section 5, we will get our hands dirty with actual `tidyverse` data manipulation.
 
@@ -428,7 +413,7 @@ To find out more about [vroom](https://vroom.r-lib.org/) and [data.table](https:
 
 Once you've loaded your data into R, it's time to start tinkering! A package that aims to make handling and manipulating data easier and more efficient is `dplyr` (pronounced d-ply-r), which you'll use most often when it comes to data manipulation. It presents itself as a *grammar of data manipulation*, providing a couple of functions to solve most common data manipulation challenges, also referred to as **verbs**: `select()`, `filter()`, `mutate()`, `arrange()`, etc.
 
-These so-called verbs can be used together harmoniously, aiming to make data wrangling a much smoother and readable experience. For your reference, I will list the functions used in [5.10 Overview] each accompanied by a short description. Worked out examples will be provided in the next sections. Similar examples can be found in the package's vignette by using `vignette("dplyr")` in R. For sake of completion, I will provide some base R alternatives, as well ([dplyr\<-\>base R](https://dplyr.tidyverse.org/articles/base.html)).
+These so-called verbs can be used together harmoniously, aiming to make data wrangling a much smoother and readable experience. For your reference, I will list the functions used in [5.10 Overview](#overview-1) each accompanied by a short description. Worked out examples will be provided in the next sections. Similar examples can be found in the package's vignette by using `vignette("dplyr")` in R. For sake of completion, I will provide some base R alternatives, as well ([dplyr\<-\>base R](https://dplyr.tidyverse.org/articles/base.html)).
 
 Using one of the datasets included with `dplyr`, we will explore the world of [Star Wars](https://en.wikipedia.org/wiki/Star_Wars). As you can see below, we have 14 variables (columns) with 87 observations (rows), so we have a lot to work with! The `glimpse()` function is included in the `dplyr` package (but is actually exported from `tibble`, which, in turn, exported it from `pillar` - phew!), and gives us a 'glimpse' of the dataset.
 
@@ -686,7 +671,7 @@ To remove grouping, either use `summarize()` in case you want to create a summar
 
 My personal take on grouping and ungrouping is that I will *always* (try to) add `ungroup()` following the use of `group_by()`, *even*, if I have already used `summarize()`. Even though `summarize()` removes a layer of grouping, the additional use of `ungroup()` makes the operation explicit, clearly conveying that your functions operate on grouped or non-grouped data. The examples provided earlier do not conform with this notion for the sake of brevity.
 
-[**Bonus:**]{.ul} `count()` provides a 'quick and dirty" convenience function so you can easily count e.g. the number of individuals that share the same `species` name, rather than going through a separate `group_by()` and `summarize()` call.
+[**Bonus:**]{.underline} `count()` provides a 'quick and dirty" convenience function so you can easily count e.g. the number of individuals that share the same `species` name, rather than going through a separate `group_by()` and `summarize()` call.
 
 ```{r count, eval = FALSE}
 starwars %>% 
@@ -943,7 +928,7 @@ movies_edit %>% left_join(publishers, by = c("MOVIE" = "movie"))
 
 ```
 
-### 5.10 Overview
+### 5.10 Overview {#overview-1}
 
 Below is a brief overview of the `dplyr` functions covered in [5. Data manipulation with `dplyr`].
 

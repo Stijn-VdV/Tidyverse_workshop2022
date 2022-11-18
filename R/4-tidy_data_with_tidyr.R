@@ -6,6 +6,9 @@ rm(list = ls())
 .rs.restartR()
 
 # - Wide vs long tables ----
+library(tidyr)
+library(dplyr) # selection helpers, e.g. starts_with()
+
 # wide table example
 billboard
 

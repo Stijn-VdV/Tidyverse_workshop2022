@@ -10,6 +10,11 @@ A system for 'declaratively' creating graphics, based on 'The Grammar of Graphic
 You provide the data, tell 'ggplot2' how to map variables to aesthetics, what
 graphical primitives to use, and it takes care of the details. "
 
+# library(dplyr)
+# library(tidyr)
+# library(ggplot2)
+library(tidyverse)
+
 # - Your first plot ----
 # initialize ggplot object with starwars data
 ggplot(data = starwars)
@@ -61,11 +66,13 @@ animal_rescues <- animal_rescues_raw %>%
     # keep only data for the years 2016 to 2021
   filter(year >= 2016) %>%
     # keep only distinct animal names
-  filter(!str_detect(animal, "Unknown")) %>%
+  filter(!stringr::str_detect(animal, "Unknown")) %>%
     # change all animal names to lowercase (preventing separate counts of e.g. Cat vs cat)
   mutate(
-    across(animal, ~tolower(.x)),
-    across(cost, ~as.numeric(.x))
+    # across(animal, ~tolower(.x)),
+    # across(cost, ~as.numeric(.x))
+    animal = tolower(animal),
+    cost = as.numeric(cost)
   ) %>%
     # keep only animals with at least 5 incidents
   group_by(animal) %>%
@@ -117,6 +124,7 @@ ggplot() +
   facet_wrap(~year) +
   scale_fill_brewer(palette = "Set3")
 
+
 # themes
 ggplot() +
   geom_bar(
@@ -147,11 +155,11 @@ animal_rescues %>%
 animal_rescues %>%
   mutate(
       # lump least frequent groups
-    animal = fct_lump_n(animal, n = 7),
+    animal = forcats::fct_lump_n(animal, n = 7),
       # reorder variable according to number of observations
-    animal = fct_infreq(tolower(animal)),
+    animal = forcats::fct_infreq(tolower(animal)),
       # reverse ordering to show bars in descending order
-    animal = fct_rev(animal)
+    animal = forcats::fct_rev(animal)
   ) %>%
   ggplot(aes(y = animal, fill = animal)) +
   geom_bar(colour = "black") +
@@ -171,13 +179,13 @@ animal_rescues %>%
   ) %>%
   ggplot(aes(y = animal, fill = animal)) +
   geom_bar(colour = "black") +
-  geom_text(stat = "count", aes(label = ..count..)) +
+  geom_text(stat = "count", aes(label = after_stat(count))) + # alternative ..count..
   facet_wrap(~year) +
   scale_fill_brewer(palette = "Set3", direction = -1) +
   theme_classic()
 
 # 4: finishing up - perfectionism!
-animal_rescues %>%
+my_plot <- animal_rescues %>%
   mutate(
       # lump least frequent groups
     animal = fct_lump_n(animal, n = 7),
@@ -190,7 +198,7 @@ animal_rescues %>%
   geom_bar(colour = "black") +
   geom_text(
     stat = 'count',
-    aes(label = ..count..),
+    aes(label = after_stat(count)),
     hjust = -0.15, col = "grey50", size = 3) +
   facet_wrap(~year) +
   scale_fill_brewer(
@@ -221,13 +229,19 @@ animal_rescues %>%
   )
 
 # - Saving a plot ----
-some_plot <- some_data %>%
-  ggplot() +
-  geom_point()
+# some_plot <- some_data %>%
+#   ggplot() +
+#   geom_point()
 
 # save plot
+# ggsave(
+#   filename = "PATH/my_plot.png", plot = some_plot,
+#   device = "png", units = "in", #inches
+#   width = 8, height = 6, dpi = 500
+# )
+
 ggsave(
-  filename = "PATH/my_plot.png", plot = some_plot,
+  filename = "graphs/animal_rescues_2.png", plot = my_plot,
   device = "png", units = "in", #inches
   width = 8, height = 6, dpi = 500
 )

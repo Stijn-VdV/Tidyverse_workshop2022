@@ -3,7 +3,7 @@
 #######  Data manipulation: dplyr pt.II #######
 ########_______________________________########
 rm(list = ls())
-.rs.restartR()
+.rs.restartR() # ctrl+shift+f10
 
 # - joining data: basic principle ----
 library(dplyr)
@@ -59,8 +59,10 @@ movies %>% inner_join(publishers)
 
 # left_join: add information to all rows of movies
 movies %>% left_join(publishers)
+# left_join(movies, publishers)
 
 # right_join: add information to all rows of publishers
+# publishers %>% left_join(movies)
 movies %>% right_join(publishers)
 
 # full_join: combine all information of both datasets
@@ -80,13 +82,15 @@ movies %>% anti_join(publishers)
 
 # - joining data III: non-identical keys ----
 # create mismatch of common columns (keys)
-movies_edit <- movies %>% rename("MOVIE" = movie)
+movies_edit <- movies %>% rename("film" = movie)
 
 # try joining tables
 movies_edit %>% left_join(publishers)
 
 # define matching keys
-movies_edit %>% left_join(publishers, by = c("MOVIE" = "movie"))
+movies_edit %>% left_join(publishers, by = c("film" = "movie"))
+left_join(movies_edit, publishers, by = c("film" = "movie"))
+left_join(movies_edit, publishers, by = c("movie" = "film")) # error
 
 # - Exercises ----
 # data for exercises

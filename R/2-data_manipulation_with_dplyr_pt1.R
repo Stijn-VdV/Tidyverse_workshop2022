@@ -214,6 +214,7 @@ starwars %>%
 # - slice() ----
 # pre-wrangle dataset into R object
 sw_force <- starwars %>%
+  filter(species != "Hutt") %>%
   mutate(
     bmi = mass/(height/100)^2,
     the_force = 1/bmi*birth_year) %>%
@@ -221,7 +222,9 @@ sw_force <- starwars %>%
   arrange(name) %>%
   tidyr::drop_na(the_force)
 
-# slice() to select/remove specific rows
+head()
+tail()
+
 sw_force %>%
   slice(1)
 
