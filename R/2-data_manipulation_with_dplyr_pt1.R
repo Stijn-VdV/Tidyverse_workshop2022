@@ -324,6 +324,7 @@ starwars %>%
 #             You can start with the code provided below
 
 storms %>%
+  # initial cleaning of dataset
   filter(!stringr::str_detect(name, "AL|Al2"))
 
 

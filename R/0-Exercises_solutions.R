@@ -37,7 +37,7 @@ storms_clean <- storms %>%
   )
 
 # EXERCISE 3: Do the following datasets follow the rules of 'tidy data'?
-#             Why (not)?
+#             Why (not)? See the workshop .HTML file for more information.
 as_tibble(mtcars)
 mtcars
 relig_income
@@ -94,7 +94,7 @@ starwars %>%
 #             1) Count the number of individuals that identify with each gender
 #                in the dataset.
 #             2) Figure out which characters have a missing (NA) gender
-#             HINT: This exercise can be broken up in two separate code blocks.
+#             HINT: 3.1 and 3.2 are separate exercises.
 starwars %>%
   count(gender)
 
@@ -116,7 +116,8 @@ starwars %>%
 #             You can start with the code provided below
 
 storms %>%
-  filter(!str_detect(name, "AL|Al2")) %>%
+  # initial cleaning of dataset
+  filter(!stringr::str_detect(name, "AL|Al2")) %>%
   group_by(name) %>%
   slice_max(wind) %>%
   slice_head(n = 1) %>%
@@ -202,9 +203,14 @@ fish_encounters %>%
 # EXERCISE 1
 # We'll be creating another graph, but using TidyTuesday's Olympics data.
 # Download all necessary information using the codeblock below
+# install.packages("tidytuesdayR")
 tuesdata <- tidytuesdayR::tt_load('2021-07-27')
 olympics <- tuesdata$olympics
 tuesdata
+
+# Or read in the data manually
+olympics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')
+
 
 # In RStudio, you can access this dataset's information by running the
 # `tuesdata` object. If you're not using RStudio, please browse to following URL:
@@ -261,13 +267,13 @@ olympics %>%
     medal_num = length(medal)
   ) %>%
   ungroup() %>%
-  drop_na(medal) %>%
+  tidyr::drop_na(medal) %>%
   group_by(noc) %>%
   mutate(total_medals = sum(medal_num)) %>%
   ungroup() %>%
   mutate(
-    noc = fct_reorder(noc, total_medals),
-    medal = fct_relevel(medal, levels = "Gold", "Silver", "Bronze"),
+    noc = forcats::fct_reorder(noc, total_medals),
+    medal = forcats::fct_relevel(medal, levels = "Gold", "Silver", "Bronze"),
     label = paste0(total_medals, " medals")
   ) %>%
   ggplot() +

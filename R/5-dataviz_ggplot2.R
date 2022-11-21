@@ -266,9 +266,14 @@ ggsave(
 # EXERCISE 1
 # We'll be creating another graph, but using TidyTuesday's Olympics data.
 # Download all necessary information using the codeblock below
+# install.packages("tidytuesdayR")
 tuesdata <- tidytuesdayR::tt_load('2021-07-27')
 olympics <- tuesdata$olympics
 tuesdata
+
+# Or read in the data manually
+olympics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')
+
 
 # In RStudio, you can access this dataset's information by running the
 # `tuesdata` object. If you're not using RStudio, please browse to following URL:
