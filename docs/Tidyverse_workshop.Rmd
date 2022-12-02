@@ -228,7 +228,7 @@ As shown in the figure above, a couple of features are shown in a tibble that ar
 
 ### 3.2a Pipes: short version
 
-Pipes are a special operator aimed at making code more intuitive to read and write (though opinions may differ). The `tidyverse` pipe is written as `%>%` (`CTRL+SHIFT+M` in RStudio) and originates from the `magrittr` package ([to be pronounced with a sophisticated french accent](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)). They are automatically loaded in with `library(tidyverse)`, but can also be loaded separately using `library(magrittr)` or `library(magrittr, include.only = "%>%")`.
+Pipes are a special operator aimed at making code more intuitive to read and write (though opinions may differ). The `tidyverse` pipe is written as `%>%` (`CTRL+SHIFT+M` in RStudio) and originates from the `magrittr` package ([to be pronounced with a sophisticated french accent](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)). They are automatically loaded in with `library(tidyverse)` or `library(dplyr)`, but can also be loaded separately using `library(magrittr)` or `library(magrittr, include.only = "%>%")`.
 
 In brief, the `magrittr` pipe passes the output of what comes *before* the pipe (left-hand side) as input to the function *after* the pipe (right-hand side). The pseudo-code below shows what this looks like in the context of baking cookies in a factory, going through the functions and pipes as if it were a conveyer belt or *pipeline*.
 
@@ -353,7 +353,7 @@ As already touched upon in the description of the `dplyr` package, tidy data is 
 knitr::include_graphics("images/tidy_data.png")
 ```
 
-If data is tidy, then **every variable goes in a column, and every column is a variable.** Tidy data is not desirable in *all* cases, but can prove to be a very robust way of structuring data when using `tidyverse`. For those who have already worked with `ggplot2` may know what I am talking about! For more more information and examples, check [12.2 Tidy data in R4DS](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1).
+If data is tidy, then **every variable goes in a column, and every column is a variable.** Tidy data is not desirable in *all* cases, but can prove to be a very robust way of structuring data when using `tidyverse`. For those who have already worked with `ggplot2` may know what I am talking about! For more information and examples, check [12.2 Tidy data in R4DS](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1).
 
 ## 4. Importing data
 
@@ -671,7 +671,7 @@ To remove grouping, either use `summarize()` in case you want to create a summar
 
 My personal take on grouping and ungrouping is that I will *always* (try to) add `ungroup()` following the use of `group_by()`, *even*, if I have already used `summarize()`. Even though `summarize()` removes a layer of grouping, the additional use of `ungroup()` makes the operation explicit, clearly conveying that your functions operate on grouped or non-grouped data. The examples provided earlier do not conform with this notion for the sake of brevity.
 
-[**Bonus:**]{.underline} `count()` provides a 'quick and dirty" convenience function so you can easily count e.g. the number of individuals that share the same `species` name, rather than going through a separate `group_by()` and `summarize()` call.
+[**Bonus:**]{.ul} `count()` provides a 'quick and dirty" convenience function so you can easily count e.g. the number of individuals that share the same `species` name, rather than going through a separate `group_by()` and `summarize()` call.
 
 ```{r count, eval = FALSE}
 starwars %>% 
